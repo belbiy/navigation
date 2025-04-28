@@ -1,11 +1,9 @@
-import React from 'react';
-import { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { Flex, Text } from '@adobe/react-spectrum';
 import { useKeyboard, usePress } from '@react-aria/interactions';
 import { useFocusable } from '@react-aria/focus';
 import ChevronSvg from '../assets/icons/Chevron.svg';
 import PlaceholderSvg from '../assets/icons/Placeholder.svg';
-import navData from '../data/navigation.json';
 
 interface IconWrapperProps {
   icon: string;
@@ -174,7 +172,7 @@ function CollapsibleSection({ title, children, defaultExpanded = false, sectionK
   );
 }
 
-function renderNavItems(items: any[], parentKey = '', selectedKey: string, onSelect: (key: string) => void, hoveredKey: string | null, setHoveredKey: (key: string | null) => void, isExpanded: boolean) {
+export function renderNavItems(items: any[], parentKey = '', selectedKey: string, onSelect: (key: string) => void, hoveredKey: string | null, setHoveredKey: (key: string | null) => void, isExpanded: boolean) {
   return items.map((item, idx) => {
     const key = `${parentKey}${item.label.replace(/\s+/g, '-')}-${idx}`;
     if (item.type === 'item') {
@@ -287,60 +285,4 @@ function renderNavItems(items: any[], parentKey = '', selectedKey: string, onSel
     }
     return null;
   });
-}
-
-interface NavigationProps {
-  isExpanded: boolean;
-}
-
-const Navigation: React.FC<NavigationProps> = ({ isExpanded }) => {
-  const [selectedKey, setSelectedKey] = useState('Home-0');
-  const [hoveredKey, setHoveredKey] = useState<string | null>(null);
-
-  return (
-    <Flex
-      direction="column"
-      UNSAFE_style={{
-        width: isExpanded ? '240px' : '60px',
-        minWidth: 0,
-        zIndex: 10,
-        position: 'relative',
-        transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-      }}
-    >
-      <style>
-        {`
-          .nav-item-button:focus-visible,
-          .nav-section-button:focus-visible {
-            box-shadow: 0 0 0 2px #2680eb;
-            outline: none;
-            position: relative;
-            z-index: 1;
-          }
-        `}
-      </style>
-      <Flex direction="column">
-        {renderNavItems(
-          navData.filter((item: any) => item.type === 'item'),
-          '',
-          selectedKey,
-          setSelectedKey,
-          hoveredKey,
-          setHoveredKey,
-          isExpanded
-        )}
-      </Flex>
-      {renderNavItems(
-        navData.filter((item: any) => item.type === 'section'),
-        '',
-        selectedKey,
-        setSelectedKey,
-        hoveredKey,
-        setHoveredKey,
-        isExpanded
-      )}
-    </Flex>
-  );
-};
-
-export default Navigation; 
+} 

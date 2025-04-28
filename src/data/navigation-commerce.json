@@ -1,0 +1,43 @@
+[
+    {
+      "type": "item",
+      "label": "Home",
+      "icon": "Home"
+    },
+    {
+      "type": "section",
+      "label": "Catalog",
+      "collapsible": true,
+      "defaultExpanded": true,
+      "items": [
+        {
+          "type": "item",
+          "label": "Products",
+          "icon": "Buildingblocks"
+        },
+        {
+          "type": "Categories",
+          "label": "Experience fragments",
+          "icon": "Layout"
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "label": "Sales",
+      "collapsible": true,
+      "defaultExpanded": false,
+      "items": [
+        {
+          "type": "item",
+          "label": "Orders",
+          "icon": "calendarday"
+        },
+        {
+          "type": "item",
+          "label": "Returns",
+          "icon": "Template"
+        }
+      ]
+    }
+  ] 

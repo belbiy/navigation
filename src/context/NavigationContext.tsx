@@ -1,21 +1,24 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import navigationData from '../data/navigation.json';
 
 interface NavigationContextType {
-  isNavigationExpanded: boolean;
+  isExpanded: boolean;
   toggleNavigation: () => void;
+  navigationItems: typeof navigationData;
 }
 
 const NavigationContext = createContext<NavigationContextType | undefined>(undefined);
 
 export const NavigationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [isNavigationExpanded, setIsNavigationExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(true);
+  const [navigationItems, setNavigationItems] = useState(navigationData);
 
   const toggleNavigation = () => {
-    setIsNavigationExpanded(!isNavigationExpanded);
+    setIsExpanded(!isExpanded);
   };
 
   return (
-    <NavigationContext.Provider value={{ isNavigationExpanded, toggleNavigation }}>
+    <NavigationContext.Provider value={{ isExpanded, toggleNavigation, navigationItems }}>
       {children}
     </NavigationContext.Provider>
   );

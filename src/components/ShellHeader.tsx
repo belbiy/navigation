@@ -5,8 +5,9 @@ import menuHamburgerIcon from '../assets/icons/MenuHamburger.svg';
 import aiChatIcon from '../assets/icons/AIChat.svg';
 import helpCircleIcon from '../assets/icons/HelpCircle.svg';
 import bellIcon from '../assets/icons/Bell.svg';
-import appsAllIcon from '../assets/icons/AppsAll.svg';
 import { useNavigation } from '../context/NavigationContext';
+import { useApp } from '../context/AppContext';
+import AppSwitcher from './AppSwitcher';
 
 // Global CSS fix to center icons within ActionGroup Item components
 const globalStyles = `
@@ -17,6 +18,7 @@ const globalStyles = `
 
 const ShellHeader: React.FC = () => {
   const { toggleNavigation } = useNavigation();
+  const { currentApp } = useApp();
 
   return (
     <>
@@ -40,7 +42,7 @@ const ShellHeader: React.FC = () => {
           </ActionButton>
           <img src={adobeLogo} alt="Adobe Logo" style={{ width: 32, height: 32, borderRadius: 6, background: '#fff' }} />
           <Text UNSAFE_style={{ fontWeight: 600, fontSize: 16 }}>
-            Adobe Experience Manager
+            {currentApp.label}
           </Text>
         </Flex>
         {/* Right: Company, Icons */}
@@ -64,10 +66,8 @@ const ShellHeader: React.FC = () => {
             <Item key="notifications" aria-label="Notifications">
               <img src={bellIcon} alt="Notifications" />
             </Item>
-            <Item key="app-switcher" aria-label="App switcher">
-              <img src={appsAllIcon} alt="App Switcher" />
-            </Item>
           </ActionGroup>
+          <AppSwitcher />
         </Flex>
       </Flex>
     </>

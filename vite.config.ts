@@ -21,4 +21,9 @@ export default defineConfig({
       external: ['unified-shell/**/*'],
     },
   },
+  define: {
+    'process.env': {},
+    'process.platform': JSON.stringify('browser'),
+    'process.version': JSON.stringify(''),
+  },
 })
