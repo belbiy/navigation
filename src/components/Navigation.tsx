@@ -2,6 +2,8 @@ import React from 'react';
 import { useState, useRef, useLayoutEffect } from 'react';
 import { Flex, Text, Button, Item, ListView, View } from '@adobe/react-spectrum';
 import { useNavigate } from 'react-router-dom';
+import { useKeyboard, useMove, usePress } from '@react-aria/interactions';
+import { useFocusable } from '@react-aria/focus';
 import ChevronSvg from '../assets/icons/Chevron.svg';
 import PlaceholderSvg from '../assets/icons/Placeholder.svg';
 import navData from '../navigation.json';
@@ -60,10 +62,23 @@ const getIconPath = (iconName: string): string => {
 function CollapsibleSection({ title, children, defaultExpanded = false, sectionKey }: { title: string, children: React.ReactNode, defaultExpanded?: boolean, sectionKey: string }) {
   const [expanded, setExpanded] = useState(defaultExpanded);
   const contentRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const [height, setHeight] = useState<string | number>(expanded ? 'auto' : 0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [showChildren, setShowChildren] = useState(expanded);
   const [isHovered, setIsHovered] = useState(false);
+  const { focusableProps } = useFocusable({}, buttonRef);
+  const { keyboardProps } = useKeyboard({
+    onKeyDown: (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        setExpanded(e => !e);
+      }
+    }
+  });
+  const { pressProps } = usePress({
+    onPress: () => setExpanded(e => !e)
+  });
 
   useLayoutEffect(() => {
     const content = contentRef.current;
@@ -103,23 +118,27 @@ function CollapsibleSection({ title, children, defaultExpanded = false, sectionK
   return (
     <div key={sectionKey} style={{ width: '100%' }}>
       <button
+        ref={buttonRef}
+        {...focusableProps}
+        {...keyboardProps}
+        {...pressProps}
         style={{
           display: 'flex',
           alignItems: 'center',
-          width: 'calc(100% - 32px)', // Account for the margins
+          width: 'calc(100% - 16px)', // Account for the 8px padding on each side
           background: isHovered ? '#e1e1e1' : 'none',
           border: 'none',
           padding: '8px 8px',
-          margin: '0 16px',
+          margin: '0 8px',
           cursor: 'pointer',
           font: 'inherit',
-          outline: 'none',
           borderRadius: 8,
           transition: 'background 0.2s',
           boxSizing: 'border-box',
+          outline: 'none',
         }}
+        className="nav-section-button"
         aria-expanded={expanded}
-        onClick={() => setExpanded(e => !e)}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -161,30 +180,42 @@ function renderNavItems(items: any[], parentKey = '', selectedKey: string, onSel
       const iconPath = getIconPath(item.icon);
       const selected = selectedKey === key;
       const hovered = hoveredKey === key;
+      const buttonRef = useRef<HTMLButtonElement>(null);
+      const { focusableProps } = useFocusable({}, buttonRef);
+      const { keyboardProps } = useKeyboard({
+        onKeyDown: (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onSelect(key);
+          }
+        }
+      });
+      const { pressProps } = usePress({
+        onPress: () => onSelect(key)
+      });
+
       return (
         <button
+          ref={buttonRef}
           key={key}
+          {...focusableProps}
+          {...keyboardProps}
+          {...pressProps}
           style={{
             display: 'flex',
             alignItems: 'center',
-            width: '100%',
+            width: 'calc(100% - 16px)', // Account for the 8px padding on each side
             background: 'none',
             border: 'none',
-            padding: '3px 16px',
+            padding: '3px 3px',
+            margin: '0 8px',
             cursor: 'pointer',
             borderRadius: 8,
             transition: 'background 0.2s',
             marginBottom: 2,
             outline: 'none',
           }}
-          onClick={() => onSelect(key)}
-          tabIndex={0}
-          onKeyDown={e => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              onSelect(key);
-            }
-          }}
+          className="nav-item-button"
           onMouseEnter={() => setHoveredKey(key)}
           onMouseLeave={() => setHoveredKey(null)}
         >
@@ -257,6 +288,17 @@ function Navigation() {
   const [hoveredKey, setHoveredKey] = useState<string | null>(null);
   return (
     <Flex direction="column">
+      <style>
+        {`
+          .nav-item-button:focus-visible,
+          .nav-section-button:focus-visible {
+            box-shadow: 0 0 0 2px #2680eb;
+            outline: none;
+            position: relative;
+            z-index: 1;
+          }
+        `}
+      </style>
       <Flex direction="column">
         {renderNavItems(
           navData.filter((item: any) => item.type === 'item'),
