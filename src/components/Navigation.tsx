@@ -2,20 +2,9 @@ import React from 'react';
 import { useState, useRef, useLayoutEffect } from 'react';
 import { Flex, Text, Button, Item, ListView, View } from '@adobe/react-spectrum';
 import { useNavigate } from 'react-router-dom';
-import HomeSvg from '../assets/icons/Home.svg';
-import PagesSvg from '../assets/icons/WebPages.svg';
-import UserEditSvg from '../assets/icons/User.svg';
-import WorkflowAddSvg from '../assets/icons/Workflow.svg';
-import ViewGridSvg from '../assets/icons/ViewGridFluid.svg';
-import ViewListSvg from '../assets/icons/Collection.svg';
-import ViewStackSvg from '../assets/icons/Models.svg';
-import ViewDetailSvg from '../assets/icons/Data.svg';
-import WorkflowSvg from '../assets/icons/Workflow.svg';
-import VideoOutlineSvg from '../assets/icons/VideoOutline.svg';
-import TextEditSvg from '../assets/icons/TextEdit.svg';
-import WrenchSvg from '../assets/icons/Wrench.svg';
-import TreeExpandSvg from '../assets/icons/TreeExpand.svg';
-import navData from '../navigation.json'
+import ChevronSvg from '../assets/icons/Chevron.svg';
+import PlaceholderSvg from '../assets/icons/Placeholder.svg';
+import navData from '../navigation.json';
 
 interface IconWrapperProps {
   icon: string;
@@ -24,6 +13,7 @@ interface IconWrapperProps {
   UNSAFE_style?: React.CSSProperties;
   'aria-hidden'?: boolean;
   className?: string;
+  onError?: (e: React.SyntheticEvent<HTMLImageElement, Event>) => void;
 }
 
 const IconWrapper: React.FC<IconWrapperProps> = ({ 
@@ -33,6 +23,7 @@ const IconWrapper: React.FC<IconWrapperProps> = ({
   UNSAFE_style,
   'aria-hidden': ariaHidden,
   className,
+  onError,
   ...props 
 }) => {
   return (
@@ -41,25 +32,29 @@ const IconWrapper: React.FC<IconWrapperProps> = ({
       style={{...style, ...UNSAFE_style}}
       aria-hidden={ariaHidden}
       className={className}
+      onError={onError}
       {...props}
     />
   );
 };
 
-const iconMap: Record<string, string> = {
-  Home: HomeSvg,
-  Pages: PagesSvg,
-  'Sites Editor': UserEditSvg,
-  'Generate variations': WorkflowAddSvg,
-  Assets: ViewGridSvg,
-  Collections: ViewListSvg,
-  Blocks: ViewStackSvg,
-  'Content fragments': ViewDetailSvg,
-  'Experience fragments': WorkflowSvg,
-  'Dynamic media templates': VideoOutlineSvg,
-  Forms: TextEditSvg,
-  Tools: WrenchSvg,
-  ChevronRight: TreeExpandSvg,
+// Function to dynamically import SVG icons
+const getIconPath = (iconName: string): string => {
+  try {
+    // Convert icon name to lowercase for case-insensitive matching
+    const lowercaseName = iconName.toLowerCase();
+    
+    // Convert camelCase to kebab-case
+    const formattedName = lowercaseName.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+    
+    // Construct the path to the SVG file
+    const iconPath = `/src/assets/icons/${formattedName}.svg`;
+    
+    return iconPath;
+  } catch (error) {
+    console.error(`Error loading icon: ${iconName}`, error);
+    return PlaceholderSvg; // Return placeholder icon if there's an error
+  }
 };
 
 function CollapsibleSection({ title, children, defaultExpanded = false, sectionKey }: { title: string, children: React.ReactNode, defaultExpanded?: boolean, sectionKey: string }) {
@@ -68,6 +63,7 @@ function CollapsibleSection({ title, children, defaultExpanded = false, sectionK
   const [height, setHeight] = useState<string | number>(expanded ? 'auto' : 0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [showChildren, setShowChildren] = useState(expanded);
+  const [isHovered, setIsHovered] = useState(false);
 
   useLayoutEffect(() => {
     const content = contentRef.current;
@@ -105,35 +101,42 @@ function CollapsibleSection({ title, children, defaultExpanded = false, sectionK
   }, [expanded]);
 
   return (
-    <div key={sectionKey}>
+    <div key={sectionKey} style={{ width: '100%' }}>
       <button
         style={{
           display: 'flex',
           alignItems: 'center',
-          width: '100%',
-          background: 'none',
+          width: 'calc(100% - 32px)', // Account for the margins
+          background: isHovered ? '#e1e1e1' : 'none',
           border: 'none',
-          padding: '8px 0',
+          padding: '8px 8px',
+          margin: '0 16px',
           cursor: 'pointer',
           font: 'inherit',
           outline: 'none',
+          borderRadius: 8,
+          transition: 'background 0.2s',
+          boxSizing: 'border-box',
         }}
         aria-expanded={expanded}
         onClick={() => setExpanded(e => !e)}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
         <IconWrapper
-          icon={TreeExpandSvg}
+          icon={ChevronSvg}
           aria-hidden
           style={{
             transition: 'transform 0.2s',
             transform: expanded ? 'rotate(90deg)' : 'rotate(0deg)',
             marginRight: 8,
             color: '#6E6E6E',
-            width: 20,
-            height: 20,
+            width: 10,
+            height: 10,
+            flexShrink: 0,
           }}
         />
-        <Text UNSAFE_style={{ fontWeight: 500, color: '#444', fontSize: 14 }}>{title}</Text>
+        <Text UNSAFE_style={{ fontWeight: 500, color: '#444', fontSize: 14, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{title}</Text>
       </button>
       <div
         ref={contentRef}
@@ -141,6 +144,7 @@ function CollapsibleSection({ title, children, defaultExpanded = false, sectionK
           height: height,
           overflow: 'hidden',
           transition: isTransitioning ? 'height 0.2s cubic-bezier(0.4, 0, 0.2, 1)' : undefined,
+          width: '100%',
         }}
         aria-hidden={!expanded}
       >
@@ -154,7 +158,7 @@ function renderNavItems(items: any[], parentKey = '', selectedKey: string, onSel
   return items.map((item, idx) => {
     const key = `${parentKey}${item.label.replace(/\s+/g, '-')}-${idx}`;
     if (item.type === 'item') {
-      const Icon = iconMap[item.icon] || null;
+      const iconPath = getIconPath(item.icon);
       const selected = selectedKey === key;
       const hovered = hoveredKey === key;
       return (
@@ -200,17 +204,20 @@ function renderNavItems(items: any[], parentKey = '', selectedKey: string, onSel
               transition: 'background 0.2s',
             }}
           >
-            {Icon && (
-              <IconWrapper
-                icon={Icon}
-                UNSAFE_style={{ 
-                  maxWidth: 20, 
-                  maxHeight: 20, 
-                  filter: selected ? 'brightness(0) invert(1)' : 'none', 
-                  transition: 'filter 0.2s' 
-                }}
-              />
-            )}
+            <IconWrapper
+              icon={iconPath}
+              UNSAFE_style={{ 
+                maxWidth: 20, 
+                maxHeight: 20, 
+                filter: selected ? 'brightness(0) invert(1)' : 'none', 
+                transition: 'filter 0.2s' 
+              }}
+              onError={(e) => {
+                // If the icon fails to load, use the placeholder
+                const imgElement = e.target as HTMLImageElement;
+                imgElement.src = PlaceholderSvg;
+              }}
+            />
           </span>
           <Text
             UNSAFE_style={{
