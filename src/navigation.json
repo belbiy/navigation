@@ -7,22 +7,22 @@
   {
     "type": "item",
     "label": "Pages",
-    "icon": "Document"
+    "icon": "Webpages"
   },
   {
     "type": "item",
     "label": "Sites editor",
-    "icon": "Edit"
+    "icon": "Editor"
   },
   {
     "type": "item",
     "label": "Generate variations",
-    "icon": "Refresh"
+    "icon": "AIGenerate"
   },
   {
     "type": "item",
     "label": "Assets",
-    "icon": "FileGear"
+    "icon": "Asset"
   },
   {
     "type": "item",
@@ -38,22 +38,22 @@
       {
         "type": "item",
         "label": "Content fragments",
-        "icon": "ViewGrid"
+        "icon": "Buildingblocks"
       },
       {
         "type": "item",
         "label": "Experience fragments",
-        "icon": "Code"
+        "icon": "Layout"
       },
       {
         "type": "item",
         "label": "Dynamic media templates",
-        "icon": "Document"
+        "icon": "contenttemplate"
       },
       {
         "type": "item",
         "label": "Forms",
-        "icon": "TextAlignJustify"
+        "icon": "form"
       }
     ]
   },
@@ -65,8 +65,18 @@
     "items": [
       {
         "type": "item",
-        "label": "Settings",
-        "icon": "Properties"
+        "label": "Launches",
+        "icon": "CalendarDay"
+      },
+      {
+        "type": "item",
+        "label": "Templates",
+        "icon": "Template"
+      },
+      {
+        "type": "item",
+        "label": "Tagging",
+        "icon": "Tag"
       }
     ]
   }

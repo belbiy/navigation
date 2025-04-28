@@ -13,7 +13,6 @@
     "@adobe/react-spectrum": "^3.41.0",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
-    "@exc/brand-icons": "file:unified-shell/packages/brand-icons",
     "@react-spectrum/list": "^3.10.0",
     "@react-spectrum/tree": "^3.1.0",
     "framer-motion": "^11.0.5",
