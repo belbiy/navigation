@@ -39,23 +39,28 @@ const IconWrapper: React.FC<IconWrapperProps> = ({
   );
 };
 
-// Function to dynamically import SVG icons
-const getIconPath = (iconName: string): string => {
-  try {
-    // Convert icon name to lowercase for case-insensitive matching
-    const lowercaseName = iconName.toLowerCase();
-    
-    // Convert camelCase to kebab-case
-    const formattedName = lowercaseName.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-    
-    // Use relative path from the current file
-    const iconPath = new URL(`../assets/icons/${formattedName}.svg`, import.meta.url).href;
-    
-    return iconPath;
-  } catch (error) {
-    console.error(`Error loading icon: ${iconName}`, error);
-    return PlaceholderSvg; // Return placeholder icon if there's an error
+// Import all SVGs in the icons directory
+const svgIcons = import.meta.glob('../assets/icons/*.svg', { eager: true, import: 'default' });
+
+// Build a map of icon names to their imported URLs
+const iconMap: Record<string, string> = {};
+for (const path in svgIcons) {
+  // Extract the file name without extension
+  const match = path.match(/\/([^/]+)\.svg$/);
+  if (match) {
+    iconMap[match[1].toLowerCase()] = svgIcons[path] as string;
   }
+}
+
+// Function to get icon path from the map
+const getIconPath = (iconName: string): string => {
+  if (!iconName) return PlaceholderSvg;
+  // Convert to lowercase and kebab-case
+  const formattedName = iconName
+    .replace(/([a-z])([A-Z])/g, '$1-$2')
+    .replace(/\s+/g, '-')
+    .toLowerCase();
+  return iconMap[formattedName] || PlaceholderSvg;
 };
 
 function CollapsibleSection({ title, children, defaultExpanded = false, sectionKey }: { title: string, children: React.ReactNode, defaultExpanded?: boolean, sectionKey: string }) {
