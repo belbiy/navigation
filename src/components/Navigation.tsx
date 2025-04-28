@@ -1,6 +1,6 @@
 import React from 'react';
-import { useState, useRef, useLayoutEffect } from 'react';
-import { Flex, Text, ActionButton, Divider, ActionGroup, Item } from '@adobe/react-spectrum';
+import { useState, useRef } from 'react';
+import { Flex, Text } from '@adobe/react-spectrum';
 import { useKeyboard, usePress } from '@react-aria/interactions';
 import { useFocusable } from '@react-aria/focus';
 import ChevronSvg from '../assets/icons/Chevron.svg';
