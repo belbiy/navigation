@@ -1,8 +1,7 @@
 import React from 'react';
 import { useState, useRef, useLayoutEffect } from 'react';
-import { Flex, Text, Button, Item, ListView, View } from '@adobe/react-spectrum';
-import { useNavigate } from 'react-router-dom';
-import { useKeyboard, useMove, usePress } from '@react-aria/interactions';
+import { Flex, Text } from '@adobe/react-spectrum';
+import { useKeyboard, usePress } from '@react-aria/interactions';
 import { useFocusable } from '@react-aria/focus';
 import ChevronSvg from '../assets/icons/Chevron.svg';
 import PlaceholderSvg from '../assets/icons/Placeholder.svg';
@@ -49,8 +48,8 @@ const getIconPath = (iconName: string): string => {
     // Convert camelCase to kebab-case
     const formattedName = lowercaseName.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
     
-    // Construct the path to the SVG file
-    const iconPath = `/src/assets/icons/${formattedName}.svg`;
+    // Use relative path from the current file
+    const iconPath = new URL(`../assets/icons/${formattedName}.svg`, import.meta.url).href;
     
     return iconPath;
   } catch (error) {
