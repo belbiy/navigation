@@ -67,6 +67,8 @@ function CollapsibleSection({ title, children, defaultExpanded = false, sectionK
   const [expanded, setExpanded] = useState(defaultExpanded);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const labelRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [contentHeight, setContentHeight] = useState<number>(0);
   const [isHovered, setIsHovered] = useState(false);
   const { focusableProps } = useFocusable({}, buttonRef);
   const { keyboardProps } = useKeyboard({
@@ -80,6 +82,14 @@ function CollapsibleSection({ title, children, defaultExpanded = false, sectionK
   const { pressProps } = usePress({
     onPress: () => setExpanded(e => !e)
   });
+
+  // Update content height when expanded changes
+  React.useEffect(() => {
+    if (contentRef.current) {
+      const height = contentRef.current.scrollHeight;
+      setContentHeight(height);
+    }
+  }, [expanded, children]);
 
   return (
     <div key={sectionKey} style={{ width: '100%' }}>
@@ -149,8 +159,16 @@ function CollapsibleSection({ title, children, defaultExpanded = false, sectionK
           </Text>
         </div>
       </button>
-      <div style={{ width: '100%' }}>
-        {expanded && children}
+      <div 
+        ref={contentRef}
+        style={{ 
+          width: '100%',
+          height: expanded ? contentHeight : 0,
+          overflow: 'hidden',
+          transition: 'height 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+        }}
+      >
+        {children}
       </div>
     </div>
   );
