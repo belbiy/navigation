@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useRef, useLayoutEffect } from 'react';
-import { Flex, Text } from '@adobe/react-spectrum';
+import { Flex, Text, ActionButton, Divider, ActionGroup, Item } from '@adobe/react-spectrum';
 import { useKeyboard, usePress } from '@react-aria/interactions';
 import { useFocusable } from '@react-aria/focus';
 import ChevronSvg from '../assets/icons/Chevron.svg';
@@ -63,13 +63,10 @@ const getIconPath = (iconName: string): string => {
   return iconMap[formattedName] || PlaceholderSvg;
 };
 
-function CollapsibleSection({ title, children, defaultExpanded = false, sectionKey }: { title: string, children: React.ReactNode, defaultExpanded?: boolean, sectionKey: string }) {
+function CollapsibleSection({ title, children, defaultExpanded = false, sectionKey, isExpanded }: { title: string, children: React.ReactNode, defaultExpanded?: boolean, sectionKey: string, isExpanded: boolean }) {
   const [expanded, setExpanded] = useState(defaultExpanded);
-  const contentRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const [height, setHeight] = useState<string | number>(expanded ? 'auto' : 0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [showChildren, setShowChildren] = useState(expanded);
+  const labelRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const { focusableProps } = useFocusable({}, buttonRef);
   const { keyboardProps } = useKeyboard({
@@ -84,41 +81,6 @@ function CollapsibleSection({ title, children, defaultExpanded = false, sectionK
     onPress: () => setExpanded(e => !e)
   });
 
-  useLayoutEffect(() => {
-    const content = contentRef.current;
-    if (!content) return;
-    if (expanded) {
-      setShowChildren(true);
-      setIsTransitioning(true);
-      setHeight(0);
-      requestAnimationFrame(() => {
-        setHeight(content.scrollHeight);
-      });
-      const handle = setTimeout(() => {
-        setHeight('auto');
-        setIsTransitioning(false);
-      }, 200);
-      return () => clearTimeout(handle);
-    } else {
-      if (height === 'auto') {
-        setHeight(content.scrollHeight);
-        requestAnimationFrame(() => {
-          setIsTransitioning(true);
-          setHeight(0);
-        });
-      } else {
-        setIsTransitioning(true);
-        setHeight(0);
-      }
-      const handle = setTimeout(() => {
-        setIsTransitioning(false);
-        setShowChildren(false);
-      }, 200);
-      return () => clearTimeout(handle);
-    }
-    // eslint-disable-next-line
-  }, [expanded]);
-
   return (
     <div key={sectionKey} style={{ width: '100%' }}>
       <button
@@ -129,15 +91,16 @@ function CollapsibleSection({ title, children, defaultExpanded = false, sectionK
         style={{
           display: 'flex',
           alignItems: 'center',
-          width: 'calc(100% - 16px)', // Account for the 8px padding on each side
+          width: isExpanded ? 'calc(100% - 16px)' : '42px',
+          height: '40px',
           background: isHovered ? '#e1e1e1' : 'none',
           border: 'none',
-          padding: '8px 8px',
+          padding: '4px 8px',
           margin: '0 8px',
           cursor: 'pointer',
           font: 'inherit',
           borderRadius: 8,
-          transition: 'background 0.2s',
+          transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
           boxSizing: 'border-box',
           outline: 'none',
         }}
@@ -146,38 +109,54 @@ function CollapsibleSection({ title, children, defaultExpanded = false, sectionK
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <IconWrapper
-          icon={ChevronSvg}
-          aria-hidden
-          style={{
-            transition: 'transform 0.2s',
-            transform: expanded ? 'rotate(90deg)' : 'rotate(0deg)',
-            marginRight: 8,
-            color: '#6E6E6E',
-            width: 10,
-            height: 10,
-            flexShrink: 0,
+        <div style={{
+          width: '32px',
+          height: '32px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+        }}>
+          <IconWrapper
+            icon={ChevronSvg}
+            aria-hidden
+            style={{
+              transition: 'transform 0.2s',
+              transform: expanded ? 'rotate(90deg)' : 'rotate(0deg)',
+              color: '#6E6E6E',
+              width: 10,
+              height: 10,
+            }}
+          />
+        </div>
+        <div 
+          ref={labelRef}
+          style={{ 
+            width: isExpanded ? '160px' : 0,
+            overflow: 'hidden',
+            transition: 'width 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+            whiteSpace: 'nowrap',
+            textAlign: 'left',
+            marginLeft: '8px',
           }}
-        />
-        <Text UNSAFE_style={{ fontWeight: 500, color: '#444', fontSize: 14, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{title}</Text>
+        >
+          <Text UNSAFE_style={{ 
+            fontWeight: 500, 
+            color: '#444', 
+            fontSize: 14,
+          }}>
+            {title}
+          </Text>
+        </div>
       </button>
-      <div
-        ref={contentRef}
-        style={{
-          height: height,
-          overflow: 'hidden',
-          transition: isTransitioning ? 'height 0.2s cubic-bezier(0.4, 0, 0.2, 1)' : undefined,
-          width: '100%',
-        }}
-        aria-hidden={!expanded}
-      >
-        {showChildren && children}
+      <div style={{ width: '100%' }}>
+        {expanded && children}
       </div>
     </div>
   );
 }
 
-function renderNavItems(items: any[], parentKey = '', selectedKey: string, onSelect: (key: string) => void, hoveredKey: string | null, setHoveredKey: (key: string | null) => void) {
+function renderNavItems(items: any[], parentKey = '', selectedKey: string, onSelect: (key: string) => void, hoveredKey: string | null, setHoveredKey: (key: string | null) => void, isExpanded: boolean) {
   return items.map((item, idx) => {
     const key = `${parentKey}${item.label.replace(/\s+/g, '-')}-${idx}`;
     if (item.type === 'item') {
@@ -208,37 +187,35 @@ function renderNavItems(items: any[], parentKey = '', selectedKey: string, onSel
           style={{
             display: 'flex',
             alignItems: 'center',
-            width: 'calc(100% - 16px)', // Account for the 8px padding on each side
+            width: isExpanded ? 'calc(100% - 16px)' : '42px',
             background: 'none',
             border: 'none',
-            padding: '3px 3px',
+            padding: '4px 8px',
             margin: '0 8px',
             cursor: 'pointer',
             borderRadius: 8,
-            transition: 'background 0.2s',
-            marginBottom: 2,
+            transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
             outline: 'none',
           }}
           className="nav-item-button"
           onMouseEnter={() => setHoveredKey(key)}
           onMouseLeave={() => setHoveredKey(null)}
         >
-          <span
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: 32,
-              height: 32,
-              borderRadius: 8,
-              background: selected
-                ? '#000'
-                : hovered
-                ? '#e1e1e1'
-                : 'none',
-              transition: 'background 0.2s',
-            }}
-          >
+          <div style={{
+            width: '32px',
+            height: '32px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+            borderRadius: 8,
+            background: selected
+              ? '#000'
+              : hovered
+              ? '#e1e1e1'
+              : 'none',
+            transition: 'background 0.2s',
+          }}>
             <IconWrapper
               icon={iconPath}
               UNSAFE_style={{ 
@@ -253,19 +230,25 @@ function renderNavItems(items: any[], parentKey = '', selectedKey: string, onSel
                 imgElement.src = PlaceholderSvg;
               }}
             />
-          </span>
-          <Text
-            UNSAFE_style={{
-              marginLeft: 12,
-              color: '#222',
-              fontWeight: 500,
-              fontSize: 14,
-              flex: 1,
-              textAlign: 'left',
-            }}
-          >
-            {item.label}
-          </Text>
+          </div>
+          <div style={{ 
+            width: isExpanded ? '160px' : 0,
+            overflow: 'hidden',
+            transition: 'width 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+            whiteSpace: 'nowrap',
+            textAlign: 'left',
+            marginLeft: '8px',
+          }}>
+            <Text
+              UNSAFE_style={{
+                color: '#222',
+                fontWeight: 500,
+                fontSize: 14,
+              }}
+            >
+              {item.label}
+            </Text>
+          </div>
         </button>
       );
     }
@@ -276,9 +259,10 @@ function renderNavItems(items: any[], parentKey = '', selectedKey: string, onSel
           sectionKey={key}
           title={item.label}
           defaultExpanded={item.defaultExpanded}
+          isExpanded={isExpanded}
         >
           <Flex direction="column">
-            {renderNavItems(item.items, key + '-', selectedKey, onSelect, hoveredKey, setHoveredKey)}
+            {renderNavItems(item.items, key + '-', selectedKey, onSelect, hoveredKey, setHoveredKey, isExpanded)}
           </Flex>
         </CollapsibleSection>
       );
@@ -287,11 +271,24 @@ function renderNavItems(items: any[], parentKey = '', selectedKey: string, onSel
   });
 }
 
-function Navigation() {
+interface NavigationProps {
+  isExpanded: boolean;
+}
+
+const Navigation: React.FC<NavigationProps> = ({ isExpanded }) => {
   const [selectedKey, setSelectedKey] = useState('Home-0');
   const [hoveredKey, setHoveredKey] = useState<string | null>(null);
   return (
-    <Flex direction="column">
+    <Flex
+      direction="column"
+      UNSAFE_style={{
+        width: isExpanded ? '240px' : '58px',
+        minWidth: 0,
+        zIndex: 10,
+        position: 'relative',
+        transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+      }}
+    >
       <style>
         {`
           .nav-item-button:focus-visible,
@@ -310,7 +307,8 @@ function Navigation() {
           selectedKey,
           setSelectedKey,
           hoveredKey,
-          setHoveredKey
+          setHoveredKey,
+          isExpanded
         )}
       </Flex>
       {renderNavItems(
@@ -319,10 +317,11 @@ function Navigation() {
         selectedKey,
         setSelectedKey,
         hoveredKey,
-        setHoveredKey
+        setHoveredKey,
+        isExpanded
       )}
     </Flex>
-  )
-}
+  );
+};
 
-export default Navigation 
+export default Navigation; 

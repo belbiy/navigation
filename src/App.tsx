@@ -1,24 +1,36 @@
+import React from 'react';
 import { Provider, defaultTheme, View, Flex } from '@adobe/react-spectrum'
 import Navigation from './components/Navigation'
+import ShellHeader from './components/ShellHeader'
+import { NavigationProvider, useNavigation } from './context/NavigationContext'
 
-function App() {
+const AppContent: React.FC = () => {
+  const { isNavigationExpanded } = useNavigation();
   return (
-    <Provider theme={defaultTheme} colorScheme="light">
-      <Flex direction="row" height="100vh">
+    <Flex direction="column" height="100vh" width="100vw">
+      <ShellHeader />
+      <Flex direction="row" flex width="100%">
         <View
-          backgroundColor="gray-50"
           width="size-3000"
           height="100%"
           padding="0"
-          borderEndWidth="thin"
-          borderEndColor="gray-200"
         >
-          <Navigation />
+          <Navigation isExpanded={isNavigationExpanded} />
         </View>
         <View flex padding="size-200">
           {/* Content area */}
         </View>
       </Flex>
+    </Flex>
+  );
+};
+
+const App: React.FC = () => {
+  return (
+    <Provider theme={defaultTheme} colorScheme="light">
+      <NavigationProvider>
+        <AppContent />
+      </NavigationProvider>
     </Provider>
   )
 }
