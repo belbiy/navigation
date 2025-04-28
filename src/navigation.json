@@ -1,0 +1,73 @@
+[
+  {
+    "type": "item",
+    "label": "Home",
+    "icon": "Home"
+  },
+  {
+    "type": "item",
+    "label": "Pages",
+    "icon": "Document"
+  },
+  {
+    "type": "item",
+    "label": "Sites editor",
+    "icon": "Edit"
+  },
+  {
+    "type": "item",
+    "label": "Generate variations",
+    "icon": "Refresh"
+  },
+  {
+    "type": "item",
+    "label": "Assets",
+    "icon": "FileGear"
+  },
+  {
+    "type": "item",
+    "label": "Collections",
+    "icon": "Collection"
+  },
+  {
+    "type": "section",
+    "label": "Blocks",
+    "collapsible": true,
+    "defaultExpanded": true,
+    "items": [
+      {
+        "type": "item",
+        "label": "Content fragments",
+        "icon": "ViewGrid"
+      },
+      {
+        "type": "item",
+        "label": "Experience fragments",
+        "icon": "Code"
+      },
+      {
+        "type": "item",
+        "label": "Dynamic media templates",
+        "icon": "Document"
+      },
+      {
+        "type": "item",
+        "label": "Forms",
+        "icon": "TextAlignJustify"
+      }
+    ]
+  },
+  {
+    "type": "section",
+    "label": "Tools",
+    "collapsible": true,
+    "defaultExpanded": false,
+    "items": [
+      {
+        "type": "item",
+        "label": "Settings",
+        "icon": "Properties"
+      }
+    ]
+  }
+] 
