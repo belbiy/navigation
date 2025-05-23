@@ -1,0 +1,86 @@
+[
+    {
+      "id": "1",
+      "name": "WKND home page",
+      "link": "aem/pages/wknd-home-page",
+      "type": "Page",
+      "status": "live",
+      "createdBy": { 
+        "name": "Jeremy Flores", 
+        "avatar": "https://randomuser.me/api/portraits/men/32.jpg" 
+      },
+      "lastModified": "2 hours ago"
+    },
+    {
+      "id": "2",
+      "name": "Rewards Card Application",
+      "link": "#",
+      "type": "Form",
+      "status": "draft",
+      "createdBy": { 
+        "name": "Meredith Jones", 
+        "avatar": "https://randomuser.me/api/portraits/women/44.jpg" 
+      },
+      "lastModified": "2 hours ago"
+    },
+    {
+      "id": "3",
+      "name": "Flamingo toy on water concept",
+      "link": "#",
+      "type": "Asset",
+      "status": "approved",
+      "createdBy": { 
+        "name": "Lucy Chang", 
+        "avatar": "https://randomuser.me/api/portraits/women/63.jpg" 
+      },
+      "lastModified": "2 days ago"
+    },
+    {
+      "id": "4",
+      "name": "WKND new page",
+      "link": "#",
+      "type": "Page",
+      "status": "approved",
+      "createdBy": { 
+        "name": "Lucy Chang", 
+        "avatar": "https://randomuser.me/api/portraits/women/63.jpg" 
+      },
+      "lastModified": "March 1, 2025"
+    },
+    {
+      "id": "5",
+      "name": "Holiday Gift Guide",
+      "link": "#",
+      "type": "Page",
+      "status": "pending",
+      "createdBy": { 
+        "name": "Meredith Jones", 
+        "avatar": "https://randomuser.me/api/portraits/women/44.jpg" 
+      },
+      "lastModified": "March 1, 2025"
+    },
+    {
+      "id": "6",
+      "name": "New campaign promo page",
+      "link": "#",
+      "type": "Page",
+      "status": "overdue",
+      "createdBy": { 
+        "name": "Jeremy Flores", 
+        "avatar": "https://randomuser.me/api/portraits/men/32.jpg" 
+      },
+      "lastModified": "February 24, 2025"
+    },
+    {
+      "id": "7",
+      "name": "Spring Refresh",
+      "link": "#",
+      "type": "Page",
+      "status": "live",
+      "createdBy": { 
+        "name": "Matt Kiely", 
+        "avatar": "https://randomuser.me/api/portraits/men/18.jpg" 
+      },
+      "lastModified": "February 21, 2025"
+    }
+  ]
