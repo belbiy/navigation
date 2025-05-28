@@ -1,0 +1,1 @@
+declare module '@adobe/react-spectrum-workflow/dist/*.js'; 

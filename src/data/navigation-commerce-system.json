@@ -1,0 +1,52 @@
+[
+  {
+    "group": "Data Management",
+    "items": [
+      { "id": "import", "label": "Import Data" },
+      { "id": "export", "label": "Export Data" },
+      { "id": "scheduled-transfers", "label": "Scheduled Transfers" },
+      { "id": "tax-rates", "label": "Tax Rates" }
+    ]
+  },
+  {
+    "group": "User Management",
+    "items": [
+      { "id": "all-users", "label": "All Users" },
+      { "id": "locked-users", "label": "Locked Users" },
+      { "id": "user-roles", "label": "User Roles" },
+      { "id": "notifications", "label": "User Notifications" }
+    ]
+  },
+  {
+    "group": "Events",
+    "items": [
+      { "id": "events-list", "label": "View All Events" },
+      { "id": "events-status", "label": "Event Status" },
+      { "id": "events-subscriptions", "label": "Event Subscriptions" }
+    ]
+  },
+  {
+    "group": "Webhooks",
+    "items": [
+      { "id": "webhooks-list", "label": "View All Webhooks" },
+      { "id": "webhooks-subscriptions", "label": "Webhook Subscriptions" },
+      { "id": "webhooks-logs", "label": "Webhook Logs" }
+    ]
+  },
+  {
+    "group": "Logs & Monitoring",
+    "items": [
+      { "id": "action-logs", "label": "Action Logs" },
+      { "id": "report", "label": "Generate Reports" },
+      { "id": "archive", "label": "Archived Logs" },
+      { "id": "bulk-actions", "label": "Bulk Actions" },
+      { "id": "admin-ui-sdk-logs", "label": "Developer Logs" }
+    ]
+  },
+  {
+    "group": "System Settings",
+    "items": [
+      { "id": "custom-variables", "label": "Custom Variables" }
+    ]
+  }
+]
