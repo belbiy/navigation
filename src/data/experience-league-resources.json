@@ -1,0 +1,53 @@
+[
+
+    {
+      "id": "4",
+      "type": "Documentation",
+      "title": "What is Adobe Commerce Optimizer?",
+      "description": "Learn how Adobe Commerce Optimizer lets you scale your catalog without re-platforming, ingest data from any source, define business catalog views and policies, and create a fast, performant storefront.",
+      "imageUrl": "/navigation/images/experience-league/what-is-aco.png",
+      "link": "https://experienceleague.adobe.com/docs/commerce-merchant-services/live-search/onboard/install.html"
+    },
+    {
+      "id": "5",
+      "type": "Documentation",
+      "title": "Merchandising rules",
+      "description": "Learn how to create a set of rules that combine logic with actions to shape a shopper's search experience in your store. Use merchandising rules to boost, bury, pin, or hide products to calibrate search results in real time to support your business goals.",
+      "imageUrl": "/navigation/images/experience-league/merchandising-rules.png",
+      "link": "https://experienceleague.adobe.com/docs/commerce-merchant-services/live-search/live-search-admin/rules/rules-add.html"
+    },
+    {
+      "id": "2",
+      "type": "Documentation",
+      "title": "Introduction to Product Recommendations",
+      "description": "Learn how you can use recommendations to increase conversions, boost revenue, and stimulate shopper engagement. Recommendations use artificial intelligence and machine-learning algorithms to perform a deep analysis of aggregated visitor data.",
+      "imageUrl": "/navigation/images/experience-league/product-recommendations.png",
+      "link": "https://experienceleague.adobe.com/docs/commerce-merchant-services/product-recommendations/overview.html"
+    },
+    {
+    "id": "1",
+    "type": "Documentation",
+    "title": "Overview of Adobe Commerce Optimizer",
+    "description": "Adobe Commerce Optimizer enhances existing commerce platforms by providing a high-performance, headless storefront that boosts organic traffic and supports merchandiser tools like A/B testing.",
+    "imageUrl": "/images/experience-league/commerce-optimizer.jpg",
+    "link": "https://experienceleague.adobe.com/docs/commerce-merchant-services/live-search/overview.html"
+  },
+  
+  {
+    "id": "3",
+    "type": "Video tutorial",
+    "title": "Creating product image variations with Adobe Firefly",
+    "description": "This journey covers the basics of Dynamic Media, how it works, what it can do for you, and what value it brings to your work and your customers.",
+    "imageUrl": "/images/experience-league/firefly-variations.jpg",
+    "link": "https://experienceleague.adobe.com/docs/creative-cloud-enterprise-learn/cce-learning-hub/fireflyoverview/firefly-tutorials/generative-fill.html"
+  },
+  
+  {
+    "id": "6",
+    "type": "Video tutorial",
+    "title": "Integrate Adobe Commerce and Adobe Journey Optimizer",
+    "description": "Learn how you can use Data Connection in Adobe Commerce to unlock Commerce data and deliver end-to-end, personalized shopper experiences in real time with the help of Adobe Journey Optimizer.",
+    "imageUrl": "/images/experience-league/journey-optimizer.jpg",
+    "link": "https://experienceleague.adobe.com/docs/commerce-learn/tutorials/adobe-journey-optimizer/create-behavioral-triggers.html"
+  }
+] 

@@ -16,12 +16,10 @@ const WelcomeMessage: React.FC<WelcomeMessageProps> = ({ username }) => {
           Welcome, {username}!
         </Heading>
         <Flex marginStart="auto" gap="size-100">
-                  <ActionButtonGroup isQuiet>
-                      <ActionButton><Edit /><Text slot="label">Customize</Text></ActionButton>
-                      
-                      <ActionButton><Refresh /><Text slot="label">Reset</Text></ActionButton>
-                  </ActionButtonGroup>
-        
+          <ActionButtonGroup isQuiet>
+            <ActionButton><Edit /><Text slot="label">Customize</Text></ActionButton>
+            
+            </ActionButtonGroup>
         </Flex>
       </Flex>
     </View>
@@ -29,3 +27,5 @@ const WelcomeMessage: React.FC<WelcomeMessageProps> = ({ username }) => {
 };
 
 export default WelcomeMessage; 
+
+//<ActionButton><Refresh /><Text slot="label">Reset</Text></ActionButton>

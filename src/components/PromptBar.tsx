@@ -31,7 +31,7 @@ const PromptBar: React.FC = () => {
                         width: '100%',
                         border: 'none'
                     }}
-                    placeholder="Describe experience you want to create or ask a question"
+                    placeholder="Ask anything"
                     UNSAFE_className="prompt-bar-text-field"
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}

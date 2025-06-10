@@ -1,14 +1,14 @@
 import React from 'react';
 import { Flex, View } from '@adobe/react-spectrum';
+import { Routes, Route } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import ShellHeader from '../components/ShellHeader';
 import commerceData from '../data/navigation-commerce.json';
 import { useNavigationContext } from '../context/NavigationContext';
-
+import CommerceHome from '../pages/CommerceHome';
 
 const CommerceApp: React.FC = () => {
   const { isNavigationExpanded } = useNavigationContext();
-  
   
   return (
     <Flex direction="column" height="100vh" width="100vw">
@@ -34,16 +34,18 @@ const CommerceApp: React.FC = () => {
         </View>
         <View 
           flex 
-          padding="size-200" 
-          marginEnd="size-200"
+          
           backgroundColor="static-white" 
           borderRadius="large"
           UNSAFE_style={{
-            transition: 'all 0.2s ease-in-out'
+            transition: 'all 0.2s ease-in-out',
+            overflowY: 'auto'
           }}
         >
-          <h2>Commerce</h2>
-          {/* Commerce-specific content */}
+          <Routes>
+            <Route path="/" element={<CommerceHome />} />
+            {/* Add additional commerce routes here */}
+          </Routes>
         </View>
       </Flex>
     </Flex>

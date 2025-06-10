@@ -1,0 +1,30 @@
+[
+  {
+    "id": "action1",
+    "title": "Create merchandising rule",
+    "icon": "Rule",
+    "iconColor": "#d7f7e1",
+    "link": "/merchandising/create-rule"
+  },
+  {
+    "id": "action2",
+    "title": "Create recommendation",
+    "icon": "CursorClick",
+    "iconColor": "#e5f0fe",
+    "link": "/recommendations/create"
+  },
+  {
+    "id": "action3",
+    "title": "Create synonym",
+    "icon": "Switch",
+    "iconColor": "#fde9ff",
+    "link": "/search/synonyms/create"
+  },
+  {
+    "id": "action4",
+    "title": "Manage search facets",
+    "icon": "Filter",
+    "iconColor": "#f9ece5",
+    "link": "/search/facets"
+  }
+] 

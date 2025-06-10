@@ -23,7 +23,9 @@ const HomeBanner: React.FC = () => {
             </View>
             <View
                 padding="size-400"
-            ><QuickActions /></View>
+            >
+                <QuickActions />
+            </View>
         </>
     );
 };
